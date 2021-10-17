@@ -87,7 +87,27 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    print("Start:", problem.getStartState())
+    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+
+    util.Stack.push(item=problem.getStartState,) #first location in stack
+    print(util.Stack.pop())
+
+    """
+    Waar op bord ben ik  --> problem.getSTartState()
+    sla locatie/actie(NOZW) op in stack, 
+    while
+        getSuccessors in stack
+        if(eten (in case van 1 bolletje)):
+            return stack met NOZW
+        elif (al bezocht) 
+            bekijk andere legale zetten
+            if(geen mogelijkheden):
+                stack.pop()
+            
+    """
+
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""

@@ -29,9 +29,6 @@ import sys
 # Parts worth reading #
 #######################
 
-"""
-eigen comment voor commit checken
-"""
 
 class Agent:
     """
