@@ -29,6 +29,10 @@ import sys
 # Parts worth reading #
 #######################
 
+"""
+eigen comment voor commit checken
+"""
+
 class Agent:
     """
     An agent must define a getAction method, but may also define the
