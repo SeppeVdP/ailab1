@@ -89,36 +89,50 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
+    
+    path = util.Stack()
+    graph = {}
+    current = problem.getStartState()
+    path.push((current, "Start", 0))
 
-    PathSoFar = util.Stack()
-    toReturn = []
-    visitedplaces = [] #alleen unieke waarden erin laten steken maken?
-    start = True
-    currentLocation = problem.getStartState()
+    while not problem.isGoalState(current):
+        " if it's a new node, save it to our graph "        
+        if current not in graph.keys():
+            graph[current] = problem.getSuccessors(current)
 
-    while not problem.isGoalState(currentLocation):
-        if start:
-            start = False
-            visitedplaces.append(currentLocation)
+        " get a list of all possibilities "
+        possibilities = []
+        for possibility in graph[current]:
+            possibilities.append(possibility[0])
+            
+        " if everything is explored, we go back "
+        go_back = set(possibilities).issubset(graph)
 
-        nextMoves = problem.getSuccessors(currentLocation)
-        possiblemoves = []
-        for locations in nextMoves:
-            if locations[0] not in visitedplaces:
-                possiblemoves.append(locations)
-        if len(possiblemoves) != 0:
-            nextMove = possiblemoves[0]
+        if go_back:
+            " remove current location "
+            path.pop()
+
+            if path.isEmpty():
+                " if we have nothing left, there is no path possible "
+                return
+            temp = path.pop()
+            path.push(temp)
+            current = temp[0]
         else:
-            PathSoFar.pop()
-            nextMove = PathSoFar.pop()
+            for check in graph[current]:
+                if check[0] not in graph.keys():
+                    " we've found a new possibility to explore "
+                    path.push(check)
+                    current =  check[0]
+                    break
+    
+    " clean our stack and get the path we followed "
+    solution = []
+    while not path.isEmpty():
+        solution.insert(0,path.pop()[1])
+    solution.remove("Start")
 
-        currentLocation = nextMove[0]
-        visitedplaces.append(nextMove[0])
-        PathSoFar.push(nextMove)
-
-    for moves in PathSoFar.list:
-        toReturn.append(moves[1])
-    return toReturn
+    return solution
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
