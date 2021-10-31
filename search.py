@@ -90,14 +90,9 @@ def depthFirstSearch(problem):
     """
     "*** YOUR CODE HERE ***"
 
-    """
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    """
     PathSoFar = util.Stack()
     toReturn = []
-    visitedplaces = []
+    visitedplaces = [] #alleen unieke waarden erin laten steken maken?
     start = True
     currentLocation = problem.getStartState()
 
@@ -125,12 +120,49 @@ def depthFirstSearch(problem):
         toReturn.append(moves[1])
     return toReturn
 
-
-
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    fringe = util.Stack()
+    #toVisit = []
+    queue = util.Queue()
+    toReturn = []
+    visitedplaces = []
+    found = False
+
+    currentLocation = problem.getStartState()
+    visitedplaces.append(currentLocation)
+    for each in problem.getSuccessors(currentLocation):
+        queue.push(each)
+
+    while not found:
+ #   for i in range(50):
+ # checks if goalstate is reached and terminates loop
+        toVisit = []
+        for moves in queue.list:
+            if problem.isGoalState(moves[0]):
+                print("=====================================")
+                found = True
+                fringe.push(moves)
+                break
+#checks if the locations in the queue have been visited or not, of not append to toVisit[], tovisit is empty at start
+        for locations in queue.list:
+            if locations[0] not in visitedplaces:
+                toVisit.append(locations)
+
+#add
+        for locations in toVisit:
+            visitedplaces.append(locations[0])
+            queue.pop()
+            for each in problem.getSuccessors(locations[0]):
+                queue.push(each)
+
+
+
+
+
+
+
 
 
 def uniformCostSearch(problem):
