@@ -19,6 +19,7 @@ Pacman agents (in searchAgents.py).
 
 import util
 
+
 class SearchProblem:
     """
     This class outlines the structure of a search problem, but doesn't implement
@@ -70,7 +71,8 @@ def tinyMazeSearch(problem):
     from game import Directions
     s = Directions.SOUTH
     w = Directions.WEST
-    return  [s, s, w, s, w, w, s, w]
+    return [s, s, w, s, w, w, s, w]
+
 
 def depthFirstSearch(problem):
     """
@@ -87,26 +89,42 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
+
+    """
     print("Start:", problem.getStartState())
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-
-    util.Stack.push(item=problem.getStartState,) #first location in stack
-    print(util.Stack.pop())
-
     """
-    Waar op bord ben ik  --> problem.getSTartState()
-    sla locatie/actie(NOZW) op in stack, 
-    while
-        getSuccessors in stack
-        if(eten (in case van 1 bolletje)):
-            return stack met NOZW
-        elif (al bezocht) 
-            bekijk andere legale zetten
-            if(geen mogelijkheden):
-                stack.pop()
-            
-    """
+    PathSoFar = util.Stack()
+    toReturn = []
+    visitedplaces = []
+    start = True
+    currentLocation = problem.getStartState()
+
+    while not problem.isGoalState(currentLocation):
+        if start:
+            start = False
+            visitedplaces.append(currentLocation)
+
+        nextMoves = problem.getSuccessors(currentLocation)
+        possiblemoves = []
+        for locations in nextMoves:
+            if locations[0] not in visitedplaces:
+                possiblemoves.append(locations)
+        if len(possiblemoves) != 0:
+            nextMove = possiblemoves[0]
+        else:
+            PathSoFar.pop()
+            nextMove = PathSoFar.pop()
+
+        currentLocation = nextMove[0]
+        visitedplaces.append(nextMove[0])
+        PathSoFar.push(nextMove)
+
+    for moves in PathSoFar.list:
+        toReturn.append(moves[1])
+    return toReturn
+
 
 
 def breadthFirstSearch(problem):
@@ -114,10 +132,12 @@ def breadthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
+
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -125,6 +145,7 @@ def nullHeuristic(state, problem=None):
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
+
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
