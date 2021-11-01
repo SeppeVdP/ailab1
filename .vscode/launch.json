@@ -1,0 +1,60 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Question 6",
+            "type": "python",
+            "request": "launch",
+            "program": "pacman.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-l",
+                "mediumCorners",
+                "-p",
+                "AStarCornersAgent",
+                "-z",
+                "0.5"
+            ]
+        },
+        {
+            "name": "DFS Medium Maze",
+            "type": "python",
+            "request": "launch",
+            "program": "pacman.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-l",
+                "mediumMaze",
+                "-p",
+                "SearchAgent"
+            ]
+        },
+        {
+            "name": "A* Big Maze",
+            "type": "python",
+            "request": "launch",
+            "program": "pacman.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-l",
+                "bigMaze",
+                "-z",
+                ".5",
+                "-p",
+                "SearchAgent",
+                "-a",
+                "fn=astar,heuristic=manhattanHeuristic"
+            ]
+        },
+        {
+            "name": "Autograder",
+            "type": "python",
+            "request": "launch",
+            "program": "autograder.py",
+            "console": "integratedTerminal"
+        }
+    ]
+}
