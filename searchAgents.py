@@ -1,3 +1,4 @@
+
 # searchAgents.py
 # ---------------
 # Licensing Information:  You are free to use or extend these projects for
@@ -295,14 +296,15 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return (self.startingPosition, (False, False, False, False))
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        return state[1] == (True, True, True, True)
 
     def getSuccessors(self, state):
         """
@@ -325,7 +327,20 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
-
+            x, y = state[0]
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextx][nexty]
+            corners = self.corners
+            if not hitsWall:
+                CornersVisited = list(state[1])
+                nextPos = (nextx, nexty)
+                if nextPos in corners:
+                    for corner in range(0, 4):
+                        if nextPos == corners[corner]:
+                            CornersVisited[corner] = True
+                CornersVisited = tuple(CornersVisited)
+                successors.append(((nextPos, CornersVisited), action, 1))
         self._expanded += 1 # DO NOT CHANGE
         return successors
 
@@ -485,7 +500,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return  search.breadthFirstSearch(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -519,9 +534,9 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         complete the problem definition.
         """
         x,y = state
-
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return state in self.food.asList()
+
 
 def mazeDistance(point1, point2, gameState):
     """
