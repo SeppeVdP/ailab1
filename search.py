@@ -123,47 +123,20 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    fringe = util.Stack()
-    #toVisit = []
-    queue = util.Queue()
-    toReturn = []
-    visitedplaces = []
-    found = False
 
-    currentLocation = problem.getStartState()
-    visitedplaces.append(currentLocation)
-    for each in problem.getSuccessors(currentLocation):
-        queue.push(each)
-
-    while not found:
- #   for i in range(50):
- # checks if goalstate is reached and terminates loop
-        toVisit = []
-        for moves in queue.list:
-            if problem.isGoalState(moves[0]):
-                print("=====================================")
-                found = True
-                fringe.push(moves)
-                break
-#checks if the locations in the queue have been visited or not, of not append to toVisit[], tovisit is empty at start
-        for locations in queue.list:
-            if locations[0] not in visitedplaces:
-                toVisit.append(locations)
-
-#add
-        for locations in toVisit:
-            visitedplaces.append(locations[0])
-            queue.pop()
-            for each in problem.getSuccessors(locations[0]):
-                queue.push(each)
-
-
-
-
-
-
-
-
+    visited = set()
+    fringe = util.Queue()
+    movesSoFar = []
+    currentlocation = problem.getStartState()
+    fringe.push((currentlocation, movesSoFar))
+    while not fringe.isEmpty():
+        location, moves = fringe.pop()
+        if not location in visited:
+            visited.add(location)
+            if problem.isGoalState(location):
+                return moves
+            for locationSuc, directionSuc, X in problem.getSuccessors(location):
+                fringe.push((locationSuc, moves+[directionSuc]))
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""

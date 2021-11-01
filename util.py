@@ -152,7 +152,7 @@ class Queue:
     def __init__(self):
         self.list = []
 
-    def push(self,item):
+    def push(self,item) -> object:
         "Enqueue the 'item' into the queue"
         self.list.insert(0,item)
 
