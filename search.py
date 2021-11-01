@@ -89,14 +89,14 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    
+
     path = util.Stack()
     graph = {}
     current = problem.getStartState()
     path.push((current, "Start", 0))
 
     while not problem.isGoalState(current):
-        " if it's a new node, save it to our graph "        
+        " if it's a new node, save it to our graph "
         if current not in graph.keys():
             graph[current] = problem.getSuccessors(current)
 
@@ -104,7 +104,7 @@ def depthFirstSearch(problem):
         possibilities = []
         for possibility in graph[current]:
             possibilities.append(possibility[0])
-            
+
         " if everything is explored, we go back "
         go_back = set(possibilities).issubset(graph)
 
@@ -123,13 +123,13 @@ def depthFirstSearch(problem):
                 if check[0] not in graph.keys():
                     " we've found a new possibility to explore "
                     path.push(check)
-                    current =  check[0]
+                    current = check[0]
                     break
-    
+
     " clean our stack and get the path we followed "
     solution = []
     while not path.isEmpty():
-        solution.insert(0,path.pop()[1])
+        solution.insert(0, path.pop()[1])
     solution.remove("Start")
 
     return solution
@@ -140,26 +140,26 @@ def breadthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
 
     visited = set()
-    fringe = util.Queue()
     movesSoFar = []
-    currentlocation = problem.getStartState()
-    fringe.push((currentlocation, movesSoFar))
-    while not fringe.isEmpty():
-        location, moves = fringe.pop()
-        if not location in visited:
-            visited.add(location)
-            if problem.isGoalState(location):
-                return moves
-            for locationSuc, directionSuc, X in problem.getSuccessors(location):
-                fringe.push((locationSuc, moves+[directionSuc]))
+    queue = util.Queue()
+    queue.push((problem.getStartState(), movesSoFar))
+    while not queue.isEmpty():
+        curPos, movesSoFar = queue.pop()
+        if not curPos in visited:
+            visited.add(curPos)
+            if problem.isGoalState(curPos):
+                return movesSoFar
+            for location, move, X in problem.getSuccessors(curPos):
+                queue.push((location, movesSoFar + [move]))
+    return []
+
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-
     successors = {}
     queue = util.PriorityQueue()
-    queuedict = {} # keep a separate dictionary because we can't easily search the queue
+    queuedict = {}  # keep a separate dictionary because we can't easily search the queue
     current = problem.getStartState()
     visited = []
     path = []
@@ -172,7 +172,7 @@ def uniformCostSearch(problem):
         for possibility in successors[current]:
             # don't re-visit nodes
             if possibility[0] in visited:
-                 continue
+                continue
 
             gval = possibility[2] + problem.getCostOfActions(path)
 
@@ -189,7 +189,7 @@ def uniformCostSearch(problem):
                 queuedict[temp[0]] = temp
 
         visited.append(current)
-        
+
         # if the queue is empty, there is no path
         if queue.isEmpty():
             return
@@ -197,7 +197,7 @@ def uniformCostSearch(problem):
         temp = queue.pop()
         current = temp[0]
         path = temp[1]
-    
+
     return path
 
 
@@ -208,13 +208,13 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    
     successors = {}
     queue = util.PriorityQueue()
-    queuedict = {} # keep a separate dictionary because we can't easily search the queue
+    queuedict = {}  # keep a separate dictionary because we can't easily search the queue
     current = problem.getStartState()
     visited = []
     path = []
@@ -227,7 +227,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         for possibility in successors[current]:
             # don't re-visit nodes
             if possibility[0] in visited:
-                 continue
+                continue
 
             gval = possibility[2] + problem.getCostOfActions(path)
             hval = heuristic(possibility[0], problem)
@@ -245,7 +245,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 queuedict[temp[0]] = temp
 
         visited.append(current)
-        
+
         # if the queue is empty, there is no path
         if queue.isEmpty():
             return
@@ -253,7 +253,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         temp = queue.pop()
         current = temp[0]
         path = temp[1]
-    
+
     return path
 
 
