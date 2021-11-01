@@ -134,6 +134,7 @@ def depthFirstSearch(problem):
 
     return solution
 
+
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
@@ -196,7 +197,52 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    successors = {}
+    queue = util.PriorityQueue()
+    current = problem.getStartState()
+    path = ["Start"]
+    cost = 0
+    visited = []
+    candidates = {}
+
+    while not problem.isGoalState(current):
+        " if it's a new node, save it "        
+        if current not in successors.keys():
+            successors[current] = problem.getSuccessors(current)
+
+        for possibility in successors[current]:
+            " don't re-visit nodes " 
+            if possibility[0] in visited:
+                 continue
+            gval = possibility[2] + cost
+            hval = heuristic(possibility[0], problem)
+
+            temp = (possibility[0], path + [(possibility[1])], gval)
+
+            " check if we already have a path to this node in the queue "
+            " if it's shorter, update it "
+            if temp[0] in candidates.keys():
+                if temp[2] < candidates[temp[0]][2]:
+                    queue.update(temp, temp[2] + hval)
+                    candidates[temp[0]] = temp
+            else:
+                queue.push(temp, temp[2] + hval)
+                candidates[temp[0]] = temp
+
+        visited.append(current)
+        
+        " if the queue is empty, there is no path "
+        if queue.isEmpty():
+            return
+        " get the item with the lowest cost to explore in the next round "
+        temp = queue.pop()
+        current = temp[0]
+        path = temp[1]
+        cost = temp[2]
+    
+    path.remove("Start")
+    return path
 
 
 # Abbreviations
